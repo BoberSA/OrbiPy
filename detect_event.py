@@ -32,12 +32,12 @@ class detection_tool():
         #y0[3:5] = v
         #print('after correction - ', y0)
         cor = correction.correction_tool()
-        y0[3:5] = cor.findVLimits(self.model, y0, 90, planes, 0.2,retit=False, maxit=100)
+        y0[3:5] = cor.findVLimits(self.model, y0, 90, planes, 0.05, retit=False, maxit=100)
         #y0[3:5] = cor.findVLimits(model, y0, beta, lims, dv0, retit=False, maxit=100, **kwargs)
         
         self.model.equation = compiler.compile_isolated(self.model.equation, [types.double, types.double[:], types.double], return_type=types.double[:]).entry_point
-
-        return(self.model.integrator.integrate_ode(self.model, y0, [0, 2*np.pi]))
+        evout= []
+        return(self.model.integrator.integrate_ode(self.model, y0, [0, 2*np.pi], planes['left']+planes['right'], evout))
         
     @staticmethod
     def plot(arr):

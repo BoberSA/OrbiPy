@@ -20,15 +20,18 @@ class integrator_tool:
             
         self.rtol = float(rtol) 
         self.nmax = float(nmax) 
-        self.method = method   
+        self.method = method 
+        self.atol = float(rtol)
         #default case
         
         self.int_param = {'atol':self.rtol, 'rtol':self.rtol, 'nsteps':self.nmax, 'method':self.method}
    
-   def integrate_ode(self, model, s0, tspan, retarr=True):
-    right_part = model.equation
+   def integrate_ode(self, model, s0, tspan, events, out):
+    
+    retarr=True
+    #right_part = model.equation
     mu = model.mu1
-    prop = scipy.integrate.ode(right_part)
+    prop = scipy.integrate.ode(model.equation)
 
     if self.int_param != None:
         method = self.method
@@ -48,23 +51,17 @@ class integrator_tool:
     prop.integrate(tspan[1])
 
     del prop
-    
-    #evout = kwargs.get('out', [])
-    #if len(evout) > 0:
-     #   events = kwargs.get('events', [])
-#        cor_out = correctEvents(events, evout, prop, sn=len(s0),
-#                            tol=kwargs['int_param']['atol'])
-      #  cor_out = correctEvents(events, evout, None, sn=len(s0),
-       #                     tol=kwargs['int_param']['atol'], 
-        #                    int_param=kwargs['int_param'],
-         #                   mu1=kwargs['mu'])
-       # evout.clear()
-        #evout.extend(cor_out)
-    
-    if retarr:
-        return np.asarray(lst)
    
-    
+    evout = out
+    if len(evout) > 0:
+        cor_out = correctEvents(model, events, evout, None, sn=len(s0), int_param=self.int_param)
+        evout.clear()
+        evout.extend(cor_out)
+      
+    if retarr:
+ 
+        return np.asarray(lst)
+       
     
     
    def set_param(self):
