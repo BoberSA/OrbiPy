@@ -3,13 +3,13 @@
 #import stop_functions as sf
 import numpy as np
 import scipy
-from stop_funcs_p import stopNull,correctEvents
+from stop_funcs_p import stopNull,correctEvents, stopFunCombined
 
 import sympy as sp
 sp.init_printing(use_unicode=True)
 
 class integrator_tool:
-   def __init__(self, rtol, nmax, method):
+   def __init__(self, rtol, nmax, method, stopf):
        
         #self.integrator_help()
         
@@ -22,9 +22,10 @@ class integrator_tool:
         self.nmax = float(nmax) 
         self.method = method 
         self.atol = float(rtol)
-        #default case
+        self.stopf = stopf
+
         
-        self.int_param = {'atol':self.rtol, 'rtol':self.rtol, 'nsteps':self.nmax, 'method':self.method}
+        self.int_param = {'atol':self.rtol, 'rtol':self.rtol, 'nsteps':self.nmax, 'method':self.method, 'stopf':self.stopf}
    
    def integrate_ode(self, model, s0, tspan, events, out):
     
@@ -45,7 +46,8 @@ class integrator_tool:
     lst = []
     #print(kwargs)
     if 'stopf' in self.int_param:
-        prop.set_solout(lambda t, s: self.int_param['stopf'](t, s, lst, self.int_param))
+        print(self.int_param['stopf'])
+        prop.set_solout(lambda t, s: self.int_param['stopf'](t, s, lst, events, self.int_param))
     else:
         prop.set_solout(lambda t, s: stopNull(t, s, lst))
     prop.integrate(tspan[1])

@@ -7,8 +7,7 @@ Created on Wed Nov 14 22:56:15 2018
 """
 import math
 import numpy as np
-import scipy
-import stop_funcs_p as sfp
+
 
 class correction_tool():
     
@@ -16,7 +15,8 @@ class correction_tool():
         #mu1 = model.mu1
         
         evout = []
-        arr = model.integrator.integrate_ode(model, y0, [0, 3140.0], lims['left']+lims['right'], evout)
+        #arr = model.integrator.integrate_ode(model, y0, [0, 3140.0], lims['left']+lims['right'], evout)
+        arr = model.integrator.integrate_ode(model, y0, [0, 3140.0], events = lims['left']+lims['right'], out=evout)
         print("It is evout ", evout)
         if evout[-1][0] < len(lims['left']):
             return 0, arr
