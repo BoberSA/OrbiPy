@@ -19,11 +19,11 @@ y0 = np.array([L2 + X0km/M.ER, 0, Z0km/M.ER, 0, 0, 0])
 leftp = M.mu1 + 500000 / M.ER
 rightp = L2 + 500000 / M.ER
 
-ev1 = evs.event_X(leftp, 0, True, False)
-ev2 = evs.event_X(rightp, 0, True, False)
+ev1 = evs.event_X(leftp, 0, True, False).event
+ev2 = evs.event_X(rightp, 0, True, False).event
 
 example = detection_tool(M)
-arr, evout = example.detect()
+arr, evout = example.detect(y0, ev1, ev2)
 example.plot(arr, evout)
 
 
