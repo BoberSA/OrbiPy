@@ -11,16 +11,16 @@ import numpy as np
 
 class correction_tool():
     
-    def prop2Limits(self, model, y0, lims):
-        #mu1 = model.mu1
-        
+    def prop2Limits(self, model, y0, lims): 
         evout = []
-        #arr = model.integrator.integrate_ode(model, y0, [0, 3140.0], lims['left']+lims['right'], evout)
         arr = model.integrator.integrate_ode(model, y0, [0, 3140.0], events = lims['left']+lims['right'], out=evout)
-        print("It is evout ", evout)
-        if evout[-1][0] < len(lims['left']):
-            return 0, arr
-        else:
+        #print("It is evout ", evout)
+        if(len(evout)!=0):
+            if evout[-1][0] < len(lims['left']):
+                return 0, arr
+            else:
+                return 1, arr
+        else: 
             return 1, arr
         
     def findVLimits(self, model, y0, beta, lims, dv0, retit=False, maxit=100):
@@ -52,8 +52,6 @@ class correction_tool():
 
             v += dv
             i += 1
-#    print('findv iterations:', i)
-#    print('%g'%v, end=' ')
         if retit:
             return v * beta_n, i
         return v * beta_n
