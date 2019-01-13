@@ -1180,6 +1180,7 @@ def stopFunCombinedInterp(t, s, lst, events, out=[], **kwargs):
 #    return 0
 
 def stopFunCombined(t, s, lst, events, out=[], **kwargs):
+    #print(type(out))
     ''' Universal event detection function that handles multiple events. 
         Intended for scipy.integrate.ode solout application. Provides \
         termination of integration process when first terminate event occur. \
@@ -1280,17 +1281,19 @@ def stopFunCombined(t, s, lst, events, out=[], **kwargs):
     terminal = False
     cur_ivs = []
     sn = s.shape[0] + 1
-        
+    #print("that is events", events)
     for event in events:
-        ivar = event['ivar']
-        evkwargs = event.get('kwargs', {})        
-        cur_iv = ivar(t, s, **evkwargs)
-        cur_ivs.append(cur_iv)
+        if(type(event)==dict):
+            ivar = event['ivar']
+            evkwargs = event.get('kwargs', {})        
+            cur_iv = ivar(t, s, **evkwargs)
+            cur_ivs.append(cur_iv)
 
     if not lst: # fast way to check if lst is empty
         cur_cnt = []
         for event in events:
-            cur_cnt.append(event.get('count', -1))
+            if(type(event)==dict):
+                cur_cnt.append(event.get('count', -1))
         if not out:
             out.append(cur_cnt)
         else:
@@ -1304,6 +1307,7 @@ def stopFunCombined(t, s, lst, events, out=[], **kwargs):
 
     cur_cnt = out[0]
     for i, event in enumerate(events):
+     if(type(event)==dict):
         stopval = event.get('stopval', 0)
         direction = event.get('direction', 0)
         corr = event.get('corr', True)
