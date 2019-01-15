@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 #import stop_functions as sf
 import numpy as np
-import scipy
+from scipy import integrate
 #from stop_funcs_p import stopNull
 
 import sympy as sp
@@ -22,7 +22,7 @@ class integrator_tool:
     
     retarr=True
     mu = model.mu1
-    prop = scipy.integrate.ode(model.equation)
+    prop = integrate.ode(model.equation)
 
     if self.int_param != None:
         method = self.method
