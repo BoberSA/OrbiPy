@@ -3,7 +3,6 @@
 #import stop_functions as sf
 import numpy as np
 from scipy import integrate
-#from stop_funcs_p import stopNull
 
 import sympy as sp
 sp.init_printing(use_unicode=True)
@@ -48,11 +47,7 @@ class integrator_tool:
     if retarr:
  
         return np.asarray(lst)
-      
-   def integrator_help(self):
-        print('integrate_ode is integrator of current system\n')
-        print('set_param is for change integrator parameters\n')
-        print('integrator_info is for some info staff\n')  
+        
         
    def correctEvents(self, model, events, evout, prop, sn, int_param):
     out = []
