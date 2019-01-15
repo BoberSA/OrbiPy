@@ -14,7 +14,6 @@ class correction_tool():
     def prop2Limits(self, model, y0, lims): 
         evout = []
         arr = model.integrator.integrate_ode(model, y0, [0, 3140.0], events = lims['left']+lims['right'], out=evout)
-        #print("It is evout ", evout)
         if(len(evout)!=0):
             if evout[-1][0] < len(lims['left']):
                 return 0, arr
@@ -29,17 +28,14 @@ class correction_tool():
         vstart = y1[3:5].copy()
         dv = dv0
         dvtol = 1e-16
-    
         rads = math.radians(beta)
         beta_n = np.array([math.cos(rads), math.sin(rads)])
        
         p, _ = self.prop2Limits(model, y1, lims)
         y1[3:5] = vstart + dv * beta_n
         p1, _ = self.prop2Limits(model, y1, lims)
-    
         if p == p1 and p == 1:
             dv = -dv
-       
         v = dv        
         i = 0
         while math.fabs(dv) > dvtol and i < maxit:
