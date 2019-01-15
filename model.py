@@ -3,9 +3,9 @@
 
 #Содержимое: константы, объект integrator, правая часть уравнения, координаты точек либрации
 
-
-import lagrange_pts_p as lpts
 import numpy as np
+import scipy
+import math
 #import orbi_data.csv
 
 class model_tool:
@@ -25,10 +25,23 @@ class model_tool:
         else:
             self.equation = crtbp
         
+        self.lagrange_points = self.lagr_pts()
         
-        self.lagrange_points = lpts.lagrange_pts(self.equation, self.mu1)
         
+    def opt(self, x, mu):
+        y = np.zeros(6)
+        y[0] = x[0]
+        return self.equation(0., y, mu)[3]
  
+    def lagr_pts(self):
+        L = np.zeros((5, 3))
+        mu = self.mu1
+        L[0, 0] = scipy.optimize.root(self.opt, 0.5, args=(mu,)).x[0]
+        L[1, 0] = scipy.optimize.root(self.opt, 2.0, args=(mu,)).x[0]
+        L[2, 0] = scipy.optimize.root(self.opt, -1.0, args=(mu,)).x[0]
+        L[3, :2] = np.array([mu-0.5, math.sqrt(3)*0.5])
+        L[4, :2] = np.array([mu-0.5, -math.sqrt(3)*0.5])
+        return L
     
     @staticmethod
     def ode1(t, s, mu):
