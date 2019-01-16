@@ -3,7 +3,6 @@
 
 import numpy as np
 import matplotlib.pyplot as plt
-from numba import compiler, types
 import correction
 
 class detection_tool():
@@ -16,7 +15,6 @@ class detection_tool():
         cor = correction.correction_tool()
         dv = cor.findVLimits(self.model, y0, 90, events, 0.05, retit=False, maxit=100)
         y0[3:5] = dv
-        self.model.equation = compiler.compile_isolated(self.model.equation, [types.double, types.double[:], types.double], return_type=types.double[:]).entry_point
         evout= []
         arr = self.model.integrator.integrate_ode(self.model, y0, [0, 2*np.pi], events, evout)
         return(arr, evout)

@@ -6,6 +6,7 @@
 import numpy as np
 from scipy import optimize
 import math
+from numba import compiler, types
 #import orbi_data.csv
 
 class model_tool:
@@ -18,10 +19,17 @@ class model_tool:
         if crtbp == None:
            self.equation = self.ode1
            if STM!= None:
-               self.equation = self.ode1_STM
+               self.equation = self.ode1_STM 
+               self.equation = compiler.compile_isolated(self.model.equation, [types.double, types.double[:], types.double], return_type=types.double[:]).entry_point
         else:
             self.equation = crtbp
-        self.lagrange_points = self.lagr_pts()
+        self.L1=optimize.root(self.opt, 0.5, args=(self.mu1,)).x[0]
+        self.L2=optimize.root(self.opt, 2.0, args=(self.mu1,)).x[0]
+        self.L3=optimize.root(self.opt, -1.0, args=(self.mu1,)).x[0]
+        self.L4=np.array([self.mu1-0.5, math.sqrt(3)*0.5])
+        self.L5=np.array([self.mu1-0.5, -math.sqrt(3)*0.5])
+
+            
         
         
     def opt(self, x, mu):
@@ -29,15 +37,6 @@ class model_tool:
         y[0] = x[0]
         return self.equation(0., y, mu)[3]
  
-    def lagr_pts(self):
-        L = np.zeros((5, 3))
-        mu = self.mu1
-        L[0, 0] = optimize.root(self.opt, 0.5, args=(mu,)).x[0]
-        L[1, 0] = optimize.root(self.opt, 2.0, args=(mu,)).x[0]
-        L[2, 0] = optimize.root(self.opt, -1.0, args=(mu,)).x[0]
-        L[3, :2] = np.array([mu-0.5, math.sqrt(3)*0.5])
-        L[4, :2] = np.array([mu-0.5, -math.sqrt(3)*0.5])
-        return L
     
     @staticmethod
     def ode1(t, s, mu):
