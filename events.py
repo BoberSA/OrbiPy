@@ -7,13 +7,12 @@ Created on Sun Jan 13 16:42:33 2019
 """
 
 class event():
-    def __init__(self, stopval, direction, isterminal, corr):
+    def __init__(self, stopval=0, direction=0, isterminal=True, corr=True, count=-1):
         self.stopval = stopval
         self.direction = direction
         self.isterminal = isterminal
         self.corr = corr
-        self.event = {'ivar':self.ivar, 'stopval':self.stopval, 'direction':self.direction,
-                      'isterminal':self.isterminal, 'corr':self.corr}
+        self.count=count
         
     def ivar(self, t, s):
         None

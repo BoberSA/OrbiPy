@@ -11,12 +11,15 @@ class detection_tool():
         
 
     def detect(self, y0, ev1, ev2):
-        events = {'left':[ev1], 'right':[ev2]}
+        events = {'left':ev1, 'right':ev2}
         cor = correction.correction_tool()
         dv = cor.findVLimits(self.model, y0, 90, events, 0.05, retit=False, maxit=100)
+        print(dv)
+        true_dv=(4.6660685e-19, 7.62016746e-03)
+        print('true_dv is', true_dv)
         y0[3:5] = dv
         evout= []
-        arr = self.model.integrator.integrate_ode(self.model, y0, [0, 2*np.pi], events, evout)
+        arr = self.model.integrator.integrate_ode(self.model, y0, [0, 2*np.pi], events['left']+events['right'], evout)
         return(arr, evout)
         
     def plot(self, arr, evout):

@@ -11,16 +11,30 @@ import numpy as np
 
 class correction_tool():
     
+    def __init__(self, func=None):
+        if func!=None:
+            None
+            #self.correction = lambda t, s: func(self.model, y0, beta, lims, dv0=0.1, retit=False, maxit=100)
+         
+        else:
+            self.correction = self.findVLimits
+        
+    
     def prop2Limits(self, model, y0, lims): 
         evout = []
         arr = model.integrator.integrate_ode(model, y0, [0, 3140.0], events = lims['left']+lims['right'], out=evout)
         if(len(evout)!=0):
+            #print('evout[-1][0] ', evout[-1][0])
             if evout[-1][0] < len(lims['left']):
+                #print('returned ', 0)
                 return 0, arr
             else:
+                #print('returned ', 1)
                 return 1, arr
         else: 
+            #print('returned ', 1)
             return 1, arr
+        
         
     def findVLimits(self, model, y0, beta, lims, dv0, retit=False, maxit=100):
 
@@ -51,3 +65,19 @@ class correction_tool():
         if retit:
             return v * beta_n, i
         return v * beta_n
+    
+    def time2Sphere(self, model, y0, beta, lims, dv0=0.1, retit=False, maxit=100):
+        import scipy
+        def Tsphere(y0, v, model, events):
+            evout = []
+            y0[4] = v
+            model.integrator.integrate_ode(model, y0, [0, 100], events, evout)
+            return evout[-1][2][6]
+
+        N = 1000
+        T = np.zeros(N)
+        V = np.linspace(-0.05, 0.05, N)
+        for i, vy in enumerate(V):
+            T[i] = -Tsphere(y0, vy, model, lims)    
+            v_max = scipy.optimize.minimize_scalar(lambda v: -Tsphere(y0, v, model, lims), bracket=(-0.05, 0.05), method='Brent', tol=1e-16)
+        return(v_max)
