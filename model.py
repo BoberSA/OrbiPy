@@ -7,7 +7,7 @@ import numpy as np
 from scipy import optimize
 import math
 from numba import compiler, types
-#import orbi_data.csv
+
 
 class model_tool:
     def __init__(self, system, integrator, crtbp, STM): 
