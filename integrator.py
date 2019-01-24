@@ -30,14 +30,15 @@ def stopFunCombined(t, s, lst, events, out=[]):
         return 0
     lst.append([*s,t,*cur_ivs])
     cur_cnt = out[0]
-    for i in range(0, len(events)):
-     if(type(event)!=str):
+    
+    for i, event in enumerate(events):
+     if(type(events[i])!=str):
         
         stopval=event.stopval
         direction=event.direction
         corr=event.corr
         isterminal=event.isterminal
-        init_cnt=-1
+        init_cnt=event.count
         
         cur_iv = cur_ivs[i]
         prev_iv = lst[-2][sn+i]
