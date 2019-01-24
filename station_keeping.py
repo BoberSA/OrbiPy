@@ -20,7 +20,7 @@ class station_keeping():
         interval = 0.01
         traectory = []
         col_dv=[]
-        for i in range (0, time//interval-1):
+        for i in range (0, int(time//interval)):
             arr = self.model.integrator.integrate_ode(self.model, self.y0, [i*interval, i*interval+1], events['left']+events['right'])
             traectory.append(arr)
             dv = self.correction.findVLimits(self.model, self.y0, 90, events['left']+events['right'], 0.05, retit=False, maxit=100)
@@ -30,7 +30,8 @@ class station_keeping():
             
         arr = self.model.integrator.integrate_ode(self.model, self.y0, [time//interval*interval, time], events['left']+events['right'])
         traectory.append(arr)   
-            
+        
+        
         return(np.array(traectory), np.array(dv))
         
     
