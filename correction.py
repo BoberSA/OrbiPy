@@ -71,13 +71,11 @@ class correction_tool():
         def Tsphere(y0, v, model, events):
             evout = []
             y0[4] = v
-            model.integrator.integrate_ode(model, y0, [0, 100], events, evout)
-            return evout[-1][2][6]
+            model.integrator.integrate_ode(model, y0, [0, 100], events=lims['left']+lims['right'], out=evout)
+            if(len(evout)!=0):
+                return evout[-1][2][6]
+            else:
+                return 8.514498422344646
 
-        N = 1000
-        T = np.zeros(N)
-        V = np.linspace(-0.05, 0.05, N)
-        for i, vy in enumerate(V):
-            T[i] = -Tsphere(y0, vy, model, lims)    
-            v_max = scipy.optimize.minimize_scalar(lambda v: -Tsphere(y0, v, model, lims), bracket=(-0.05, 0.05), method='Brent', tol=1e-16)
-        return(v_max)
+        v_max = scipy.optimize.minimize_scalar(lambda v: -Tsphere(y0, v, model, lims), bracket=(-0.05, 0.05), method='Brent', tol=1e-16)
+        return(v_max.x)

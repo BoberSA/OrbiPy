@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-import numpy as np
 import matplotlib.pyplot as plt
 import correction
 
@@ -10,13 +9,14 @@ class detection_tool():
         self.model = model
         
 
-    def detect(self, y0, ev1, ev2):
+    def detect(self, y0, time, ev1, ev2):
         events = {'left':ev1, 'right':ev2}
         cor = correction.correction_tool()
+        #dv = cor.time2Sphere(self.model, y0, 90, events, 0.05, retit=False, maxit=100)
         dv = cor.findVLimits(self.model, y0, 90, events, 0.05, retit=False, maxit=100)
         y0[3:5] = dv
         evout= []
-        arr = self.model.integrator.integrate_ode(self.model, y0, [0, 8*np.pi], events['left']+events['right'], evout)
+        arr = self.model.integrator.integrate_ode(self.model, y0, [0, time], events['left']+events['right'], evout)
         return(arr, evout)
         
     def plot(self, arr, evout=None):

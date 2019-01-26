@@ -17,19 +17,20 @@ class station_keeping():
     def orbit_calculate(self, time, ev1, ev2):
         import numpy as np
         events = {'left':[ev1], 'right':[ev2]}
-        interval = 0.01
+        interval = 1
         traectory = []
         col_dv=[]
         for i in range (0, int(time//interval)):
-            arr = self.model.integrator.integrate_ode(self.model, self.y0, [i*interval, i*interval+1], events['left']+events['right'])
-            traectory.append(arr)
-            dv = self.correction.findVLimits(self.model, self.y0, 90, events['left']+events['right'], 0.05, retit=False, maxit=100)
+            evout=[]
+            arr = self.model.integrator.integrate_ode(self.model, self.y0, [i*interval, i*interval+1], events['left']+events['right'], out=evout)
+            traectory.extend(arr)
+            dv = self.corr.findVLimits(self.model, self.y0, 90, events, 0.05, retit=False, maxit=100)
             self.y0[3:5] = dv
             col_dv.append(dv)
             
             
         arr = self.model.integrator.integrate_ode(self.model, self.y0, [time//interval*interval, time], events['left']+events['right'])
-        traectory.append(arr)   
+        traectory.extend(arr)   
         
         
         return(np.array(traectory), np.array(dv))
