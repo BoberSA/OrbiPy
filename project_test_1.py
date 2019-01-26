@@ -18,16 +18,17 @@ leftp = M.mu1 + 500000 / M.ER
 rightp = M.L2 + 500000 / M.ER
 ev1 = evs.event_X(leftp)
 ev2 = evs.event_X(rightp)
-example = detection_tool(M)
-arr, evout = example.detect(y0, [ev1], [ev2])
-example.plot(arr, evout)
+#example = detection_tool(M)
+#arr, evout = example.detect(y0, 8*np.pi, [ev1], [ev2])
+#example.plot(arr, evout)
 
-#cor = correction.correction_tool()
-#K = sk.station_keeping(M, cor, y0)
-#arr, dv = K.orbit_calculate(2*np.pi, ev1, ev2)
-#plt.figure(figsize=(10,10))
-#plt.plot(arr[:,0],arr[:,1],'.-')
-#plt.axis('equal')
+cor = correction.correction_tool()
+K = sk.station_keeping(M, cor, y0)
+arr, dv = K.orbit_calculate(2*np.pi, ev1, ev2)
+print(arr)
+plt.figure(figsize=(10,10))
+plt.plot(arr[:,0],arr[:,1],'.-')
+plt.axis('equal')
 
 
 
