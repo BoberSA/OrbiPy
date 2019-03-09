@@ -7,11 +7,14 @@ import numpy as np
 from scipy import optimize
 import math
 from numba import compiler, types
-
+import os
 
 class model_tool:
-    def __init__(self, system, integrator, crtbp, STM): 
-        data = self.prepare_file('orbi_data.csv')
+    def __init__(self, system, integrator, crtbp=None, STM=None, filename=None): 
+        if filename == None:
+            data = self.prepare_file(os.path.join(os.path.dirname(__file__), 'orbi_data.csv'))
+        else:
+            data = self.prepare_file(os.path.join(os.path.dirname(__file__), filename))
         const = self.get_orbi(data, system)
         self.mu1 = const[0]
         self.ER = const[1] 
@@ -58,6 +61,8 @@ class model_tool:
         
     @staticmethod
     def ode1_STM(t, s, mu):
+        """Функция, реализующая правую часть системы дифференциальных уравнений, где переменными являются время, вектор состояния и mu 
+        (параметр системы). В функции реализована State Transition Matrix"""
         x, y, z, x1, y1, z1 = s[:6]
 
         STM = np.ascontiguousarray(s[6:]).reshape(6, 6)
@@ -93,6 +98,8 @@ class model_tool:
  
     @staticmethod
     def prepare_file(filename):
+     """Функция, осуществляющая выгрузку данных из таблицы с различными моделями для CRTBP."""
+        
      import csv
      a = {}
      with open(filename, 'r') as csvfile:
