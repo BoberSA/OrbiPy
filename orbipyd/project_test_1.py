@@ -52,20 +52,26 @@ ev2 = events.event_X(rightp)
 """
 Corrector = correction.correction_tool()
 Keeper = station_keeping.station_keeping(Model, Corrector, initial_vector)
-result_array, dv = Keeper.orbit_calculate(8 * np.pi, ev1, ev2)
+result_array, dv, evout = Keeper.orbit_calculate(8 * np.pi, ev1, ev2)
+events = {'left':[ev1], 'right':[ev2]}
+dv = Corrector.time2Sphere(Model, initial_vector, 90, events, 0.05, retit=False, maxit=100)
 
-
+#initial_vector[4] = dv
+#result_array = Integrator.integrate_ode(Model, initial_vector, [0, 2 * np.pi])
 """
 """
 ev_names = ['X:0', 'alpha:120', 'Y:0', 'alpha:60']
 plt.figure(figsize=(10,10))
 plt.plot(result_array[:,0],result_array[:,1],'.-')
-for ie, _, s, _ in evout:
-    plt.plot(s[0], s[1], '+k')
-    plt.text(s[0], s[1], ' [%d] %s' % (ie, ev_names[ie]))    
-plt.axis('equal')
 
 
+print(initial_vector, result_array[-1])
+#for ie, _, s, _ in evout:
+#    plt.plot(s[0], s[1], '+k')
+#    plt.text(s[0], s[1], ' [%d] %s' % (ie, ev_names[ie]))    
+#plt.axis('equal')
+
+#plt.show()
 
 
 
