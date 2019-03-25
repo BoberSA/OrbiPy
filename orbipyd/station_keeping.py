@@ -10,7 +10,7 @@ import numpy as np
 
 
 class station_keeping():
-    """Класс, реализующий расчет орбиты на заданное время вперед или назад."""
+    """Класс, реализующий модель исследуемой системы."""
     def __init__(self, model, correction, y0):
         """type of those elements - class model and class correction
            y0 - начальный вектор состояния
@@ -31,11 +31,11 @@ class station_keeping():
         event_list = events['left']+events['right']
         
         intervals = int(time/(2*np.pi))
-        intervals = 7
-        print(intervals)
+        #intervals = 7
+        #print(intervals)
         traectory = []
-        col_dv=[]
-
+        col_dv = []
+        Evout = []
         initial_state = self.y0
         for i in range (0, intervals):
             evout=[]
@@ -52,7 +52,7 @@ class station_keeping():
             #print ("time_range = ", time_range)
             arr = self.model.integrator.integrate_ode(self.model, initial_state, time_range, event_list, out=evout)
             traectory.extend(arr[:-1])
-            
+            Evout.extend(evout)
             initial_state = arr[-1][:6] 
             
             
@@ -60,7 +60,7 @@ class station_keeping():
         #traectory.extend(arr)   
         
         
-        return(np.array(traectory), np.array(col_dv))
+        return(np.array(traectory), np.array(col_dv), np.array(Evout))
         
     
     
