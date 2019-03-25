@@ -10,8 +10,11 @@ import numpy as np
 
 
 class correction_tool():
-    
+    """Класс, реализующий механизмы коррекции орбиты."""
     def __init__(self, func=None):
+        """ 
+        func - алгоритм коррекции. Если None, то дефолтное значение findVLimits.
+        """
         if func!=None:
             None
             #self.correction = lambda t, s: func(self.model, y0, beta, lims, dv0=0.1, retit=False, maxit=100)
@@ -21,6 +24,20 @@ class correction_tool():
         
     
     def prop2Limits(self, model, y0, lims): 
+        """
+        lims is a dictionary with terminal event functions
+        lims['left'] is a list of events that implement left limit
+        lims['right'] is a list of events that implement right limit
+        THis function is a copy from planar cr3bp
+    
+        Returns
+        -------
+    
+        0 : if spacecraft crosses left constrain
+        1 : otherwise
+    
+        and calculated orbit
+        """
         evout = []
         arr = model.integrator.integrate_ode(model, y0, [0, 3140.0], events = lims['left']+lims['right'], out=evout)
         if(len(evout)!=0):
@@ -37,7 +54,42 @@ class correction_tool():
         
         
     def findVLimits(self, model, y0, beta, lims, dv0, retit=False, maxit=100):
-
+        ''' Calculate velocity correction vector in XY plane that corresponds to 
+        bounded motion around libration point in CRTBP.
+        Uses modified bisection algorithm; prop2Limits.
+    
+        Parameters
+        ----------
+        model : class model object
+        mu : scalar
+            CRTBP mu1 coefficient.
+        y0 : array_like with 6 components
+            Initial spacecraft state vector (x0,y0,vx0,vy0).
+        
+        beta : scalar
+            Angle at which correction value will be found.
+        
+        lims : 
+            See prop2Limits function.
+            
+        dv0 : scalar
+            Initial step for correction value calculation.
+        
+        
+        
+        Returns
+        -------
+    
+        v : np.array
+            Array of (2,) shape - velocity correction vector
+            in XY plane (dvx,dvy)
+    
+        See Also
+        --------
+    
+        prop2Limits
+       
+        '''
         y1 = np.asarray(y0).copy()
         vstart = y1[3:5].copy()
         dv = dv0
@@ -67,6 +119,7 @@ class correction_tool():
         return v * beta_n
     
     def time2Sphere(self, model, y0, beta, lims, dv0=0.1, retit=False, maxit=100):
+        """ Calculate velocity correction vector"""
         import scipy
         def Tsphere(y0, v, model, events):
             evout = []

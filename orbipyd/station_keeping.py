@@ -10,13 +10,23 @@ import numpy as np
 
 
 class station_keeping():
+    """Класс, реализующий расчет орбиты на заданное время вперед или назад."""
     def __init__(self, model, correction, y0):
-        #type of those elements - class model and class correction
+        """type of those elements - class model and class correction
+           y0 - начальный вектор состояния
+        """
         self.model = model
         self.corr = correction
         self.y0 = y0
         
     def orbit_calculate(self, time, ev1, ev2):
+        """
+        Функция для расчета орбиты на несколько оборотов вперед. 
+        time - время для расчета
+        ev1, ev2 - требуемые для коррекции события
+        
+        
+        """
         events = {'left':[ev1], 'right':[ev2]}
         event_list = events['left']+events['right']
         

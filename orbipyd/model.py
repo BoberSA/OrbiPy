@@ -10,6 +10,7 @@ from numba import compiler, types
 import os
 
 class model_tool:
+    """Класс, реализующий модель исследуемой системы."""
     def __init__(self, system, integrator, crtbp=None, STM=None, filename=None): 
         """Переменные: system - идентификатор системы трех тел в формате P1P2 (Planet-1, Planet-2) integrator - объект-функция, производящая интегрирование орбиты crtbp - правая часть системы уравнений, описывающих модель (при отсутствии таковой задается предусмотренная - ode1)
         STM - если не None, то правая часть становится ode1_STM, то есть с матрицей. Но пока ode только предусмотренная.
