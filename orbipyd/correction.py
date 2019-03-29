@@ -10,11 +10,13 @@ import numpy as np
 
 
 class correction_tool():
-    """Класс, реализующий механизмы коррекции орбиты."""
+    """ A class for orbit correction mechanisms """
     def __init__(self, func=None):
         """ 
-        func - алгоритм коррекции. Если None, то дефолтное значение findVLimits.
+        func is correction algorithm
+        default value is findVLimits
         """
+
         if func!=None:
             None
             #self.correction = lambda t, s: func(self.model, y0, beta, lims, dv0=0.1, retit=False, maxit=100)
@@ -119,7 +121,28 @@ class correction_tool():
         return v * beta_n
     
     def time2Sphere(self, model, y0, beta, lims, dv0=0.1, retit=False, maxit=100):
-        """ Calculate velocity correction vector"""
+        """ 
+        Calculate velocity correction vector
+        Parameters
+        ----------
+        model : class model object
+        y0 : array_like with 6 components
+            Initial spacecraft state vector (x0,y0,vx0,vy0).
+        
+        beta : scalar
+            Angle at which correction value will be found.
+        
+        lims : 
+            See prop2Limits function.
+            
+        dv0 : scalar
+            Initial step for correction value calculation.
+        Returns
+        -------
+        v : np.array
+        y-coordinate in velocity correction vector 
+        """
+
         import scipy
         def Tsphere(y0, v, model, events):
             evout = []

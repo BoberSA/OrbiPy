@@ -10,22 +10,35 @@ import numpy as np
 
 
 class station_keeping():
-    """Класс, реализующий модель исследуемой системы."""
+    """A class for creating model of investigated system"""
     def __init__(self, model, correction, y0):
-        """type of those elements - class model and class correction
-           y0 - начальный вектор состояния
         """
+        Parameters
+        ----------
+        model - class model
+        correction - class correction
+        y0 : array_like with 6 components
+            Initial spacecraft state vector)
+        """
+
         self.model = model
         self.corr = correction
         self.y0 = y0
         
     def orbit_calculate(self, time, ev1, ev2):
         """
-        Функция для расчета орбиты на несколько оборотов вперед. 
-        time - время для расчета
-        ev1, ev2 - требуемые для коррекции события
-        
-        
+        Function for orbit calculation several turns ahead
+        Parameters
+        ----------
+        Time: scalar
+            time for calculation 
+        ev1, ev2:
+            essary events for correction
+            
+        Returns
+        -------
+        Trajectory: array of state vectors
+
         """
         events = {'left':[ev1], 'right':[ev2]}
         event_list = events['left']+events['right']

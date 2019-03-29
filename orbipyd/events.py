@@ -7,10 +7,10 @@ Created on Sun Jan 13 16:42:33 2019
 """
 
 class event():
-    """Класс, реализующий возможные события."""
+    """A class for set possible events"""
     def __init__(self, stopval=0, direction=0, isterminal=True, corr=True, count=-1):
         ''' 
-        isterminal - является ли событие терминальным
+        isterminal - is the event terminal or not
         '''
         self.stopval = stopval
         self.direction = direction
@@ -22,7 +22,12 @@ class event():
         ''' Independent variable function that returns coordinate 
         of spacecraft state vector.
         Should be used in stopFun and accurateEvent functions
-    
+        
+        General view of event function: E(t, s) = ivar(t, s) - stopval
+        
+        For example, for crossing with plane with x coordinate we need to calculate 
+        E(t,s) = event_X.ivar(t,s) - x
+        
         Parameters
         ----------
         t : scalar
@@ -32,22 +37,12 @@ class event():
         
         Returns
         -------
-        coordinate of state vector s.
+        Depends on specific event.
         '''
         None
         
 class event_X(event):
-    ''' Independent variable function that returns X coordinate 
-        of spacecraft state vector.
-        Should be used in stopFun and accurateEvent functions
-    
-        Parameters
-        ----------
-        t : scalar
-            Dimensionless time (same as angle of system rotation)        
-        s : array_like with 6 components
-            State vector of massless spacecraft (x,y,z,vx,vy,vz)
-        
+    ''' 
         Returns
         -------
         X coordinate of state vector s.
@@ -56,16 +51,7 @@ class event_X(event):
         return(s[0])
         
 class event_Y(event):
-    ''' Independent variable function that returns Y coordinate 
-        of spacecraft state vector.
-        Should be used in stopFun and accurateEvent functions
-    
-        Parameters
-        ----------
-        t : scalar
-            Dimensionless time (same as angle of system rotation)        
-        s : array_like with 6 components
-            State vector of massless spacecraft (x,y,z,vx,vy,vz)
+    ''' 
         
         Returns
         -------
@@ -75,16 +61,7 @@ class event_Y(event):
         return(s[1])
     
 class event_Z(event):
-    ''' Independent variable function that returns Z coordinate 
-        of spacecraft state vector.
-        Should be used in stopFun and accurateEvent functions
-    
-        Parameters
-        ----------
-        t : scalar
-            Dimensionless time (same as angle of system rotation)        
-        s : array_like with 6 components
-            State vector of massless spacecraft (x,y,z,vx,vy,vz)
+    ''' 
         
         Returns
         -------
@@ -94,16 +71,7 @@ class event_Z(event):
         return(s[2])
     
 class event_VX(event):
-    ''' Independent variable function that returns VX coordinate 
-        of spacecraft state vector.
-        Should be used in stopFun and accurateEvent functions
-    
-        Parameters
-        ----------
-        t : scalar
-            Dimensionless time (same as angle of system rotation)        
-        s : array_like with 6 components
-            State vector of massless spacecraft (x,y,z,vx,vy,vz)
+    ''' 
         
         Returns
         -------
@@ -113,16 +81,7 @@ class event_VX(event):
         return(s[3])
         
 class event_VY(event):
-    ''' Independent variable function that returns VY coordinate 
-        of spacecraft state vector.
-        Should be used in stopFun and accurateEvent functions
-    
-        Parameters
-        ----------
-        t : scalar
-            Dimensionless time (same as angle of system rotation)        
-        s : array_like with 6 components
-            State vector of massless spacecraft (x,y,z,vx,vy,vz)
+    ''' 
         
         Returns
         -------
@@ -132,16 +91,7 @@ class event_VY(event):
         return(s[4])
         
 class event_VZ(event):
-    ''' Independent variable function that returns VZ coordinate 
-        of spacecraft state vector.
-        Should be used in stopFun and accurateEvent functions
-    
-        Parameters
-        ----------
-        t : scalar
-            Dimensionless time (same as angle of system rotation)        
-        s : array_like with 6 components
-            State vector of massless spacecraft (x,y,z,vx,vy,vz)
+    ''' 
         
         Returns
         -------

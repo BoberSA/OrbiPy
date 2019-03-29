@@ -151,9 +151,19 @@ def stopFunCombined(t, s, lst, events, out=[]):
     return 0
 
 class integrator_tool:
-   """Класс, реализующий интегратор."""
+   """A class for integrator"""
    def __init__(self, rtol, nmax, method=None, stopf=None):
-        """Переменные: Параметры для интегратора: rtol - точность, nmax - максимальное число шагов интегрирования, method - метод интегрирования Предназначение: Задать параметры интегратора int_param для дальнейшей работы с scypy.integrate.   """
+        """  Set parameters for integrator int_param for scypy.integrate.   
+        Parameters
+        ----------
+        Rtol: double
+            tolerance 
+        nmax: integer
+            maximum number of steps for integration
+        method:
+            integration method 
+        """ 
+
        
         self.rtol = float(rtol) 
         self.nmax = float(nmax) 
@@ -162,7 +172,24 @@ class integrator_tool:
         self.stopf = stopf
    
    def integrate_ode(self, model, s0, tspan, events=[], out=[]):
-    """Переменные: model - собранная модель, s0 - начальный вектор состояния, tspan - время Предназначение: интегрирует вектор состояния на время, возвращает массив векторов.   """
+    """
+    Integrate a state vector for preset time
+    Parameters
+    ----------
+    Model: class model object
+	
+    s0 : array_like with 6 components
+            Initial spacecraft state vector)
+	
+    tspan: scalar
+        integration time
+    Returns
+    -------
+    lst: array 
+        	state vectors
+
+"""
+
     retarr=True
     mu = model.mu1
     prop = integrate.ode(model.equation)
@@ -233,7 +260,7 @@ class integrator_tool:
     return out 
 
    def brent(self, model, event, t0, t1, s0, tol=1e-12, maxiter=50, debug=False):
-    """Функция, реализующая численный метод Брента """
+    """function for numerical Brent method"""
     import scipy.optimize
     import math
     ivar = event.ivar
