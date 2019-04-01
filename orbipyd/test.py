@@ -30,14 +30,14 @@ class integrator_test(unittest.TestCase):
 
         #result_array, dv, evout = Keeper.orbit_calculate(2 * np.pi, ev1, ev2)
 
-    def test_integrate_ode(self):
+    def test_integrate_ode_one(self):
         x = np.array([Model.L2 + X0km/Model.ER, 0, Z0km/Model.ER, 0, 0, 0])
         x[4] = 0.0076201674736758925
         y = np.array([1.00871674e+00,  9.75960362e-04,  1.29750112e-03,  3.40512141e-04,\
                       7.33582905e-03, -2.06372494e-04])
         result = Integrator.integrate_ode(Model, x, [0, 2 * np.pi])
         result = np.array(result[-1][:6]) - y
-        print(result)
+        #print(result)
         self.assertTrue(np.linalg.norm(result)<0.1)
         
     def test_brent(self):
@@ -53,7 +53,19 @@ class integrator_test(unittest.TestCase):
         with self.assertRaises(TypeError):
             Corrector.corrector(initial_vector, 90, events, 0.05, retit=False, maxit=100)
     
+    def test_integrate_ode_two(self):
+        origin = np.array([1.00869484e+00, 0.00000000e+00, 1.33689840e-03, 4.66600685e-19,\
+                           7.62016746e-03, 0.00000000e+00])
+        result = Integrator.integrate_ode(Model, origin, [0, 2 * np.pi])
+        result = np.array(result[-1][:6]) - origin
+        self.assertTrue(np.linalg.norm(result[:3])<0.1)
         
+    def test_corrector_function(self):
+        initial_vector = np.array([1.00869484, 0., 0.0013369,  0.,  0., 0])
+        result = Corrector.corrector(Model,initial_vector, 90, events, 0.05, retit=False, maxit=100)
+        origin = np.array([4.66600685e-19, 7.62016746e-03])
+    
+        self.assertTrue(np.linalg.norm(result-origin)<0.1)
         
 if __name__ == '__main__':
     unittest.main()   

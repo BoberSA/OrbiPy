@@ -55,10 +55,11 @@ Corrector = orb.correction.correction_tool()
 #result_array, dv, evout = Keeper.orbit_calculate(8 * np.pi, ev1, ev2)
 events = {'left':[ev1], 'right':[ev2]}
 dv = Corrector.corrector(Model, initial_vector, 90, events, 0.05, retit=False, maxit=100)
-
+print(initial_vector, dv)
 initial_vector[3] = dv[0]
 initial_vector[4] = dv[1]
 result_array = Integrator.integrate_ode(Model, initial_vector, [0, 2 * np.pi])
+#print(result_array[0], result_array[-1])
 """
 """
 #ev_names = ['X:0', 'alpha:120', 'Y:0', 'alpha:60']
