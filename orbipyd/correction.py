@@ -9,37 +9,21 @@ import math
 import numpy as np
 
 
-class correction_tool():
+class base_correction_tool():
     """ A class for orbit correction mechanisms """
     def __init__(self, func=None):
         """ 
         func is correction algorithm
         default value is findVLimits
         """
-
-        if func!=None:
-            None
-            #self.correction = lambda t, s: func(self.model, y0, beta, lims, dv0=0.1, retit=False, maxit=100)
-         
-        else:
-            self.correction = self.findVLimits
         
-    
+        def corrector(self, model, y0, beta, lims, dv0, retit=False, maxit=100):
+            return None
+        
+        
+class correction_tool(base_correction_tool):    
     def prop2Limits(self, model, y0, lims): 
-        """
-        lims is a dictionary with terminal event functions
-        lims['left'] is a list of events that implement left limit
-        lims['right'] is a list of events that implement right limit
-        THis function is a copy from planar cr3bp
-    
-        Returns
-        -------
-    
-        0 : if spacecraft crosses left constrain
-        1 : otherwise
-    
-        and calculated orbit
-        """
+       
         evout = []
         arr = model.integrator.integrate_ode(model, y0, [0, 3140.0], events = lims['left']+lims['right'], out=evout)
         if(len(evout)!=0):
@@ -55,7 +39,7 @@ class correction_tool():
             return 1, arr
         
         
-    def findVLimits(self, model, y0, beta, lims, dv0, retit=False, maxit=100):
+    def corrector(self, model, y0, beta, lims, dv0, retit=False, maxit=100):
         ''' Calculate velocity correction vector in XY plane that corresponds to 
         bounded motion around libration point in CRTBP.
         Uses modified bisection algorithm; prop2Limits.

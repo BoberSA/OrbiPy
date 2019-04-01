@@ -37,7 +37,7 @@ class station_keeping():
             
         Returns
         -------
-        Trajectory: array of state vectors
+        Trajectory: array of state vectors, array of corrections values, evouts
 
         """
         events = {'left':[ev1], 'right':[ev2]}
@@ -55,8 +55,9 @@ class station_keeping():
 
             #print ("initial_state = ", initial_state)
             #dv = self.corr.findVLimits(self.model, initial_state, 90, events, 0.05, retit=False, maxit=100)
-            dv = self.corr.time2Sphere(self.model, initial_state, 90, events, 0.05, retit=False, maxit=100)
-            initial_state[4] = dv
+            dv = self.corr.corrector(self.model, initial_state, 90, events, 0.05, retit=False, maxit=100)
+            initial_state[3] = dv[0]
+            initial_state[4] = dv[1]
             #print ("initial_state + dv = ", initial_state)
             col_dv.append(dv)
 
