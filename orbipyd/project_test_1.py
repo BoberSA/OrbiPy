@@ -10,10 +10,10 @@
 """
 Необходимые импорты: из установленного модуля импортируем все его классы.
 """
+from orbipyd import detect_event
 import orbipyd as orb
 import numpy as np
 import matplotlib.pyplot as plt
-
 """
 Задаем интегратор и модель системы. В нашем примере это модель Солнце-Земля. Все необходимые константы 
 передаются в качестве аргументов или получаются встроенными функциями по умолчанию.
@@ -51,18 +51,21 @@ ev2 = orb.events.event_X(rightp)
 Далее задаем инструмент для расчета орбиты на много оборотов вперед.
 """
 Corrector = orb.correction.correction_tool()
-#Keeper = station_keeping.station_keeping(Model, Corrector, initial_vector)
-#result_array, dv, evout = Keeper.orbit_calculate(8 * np.pi, ev1, ev2)
+#Keeper = orb.station_keeping.station_keeping(Model, Corrector, initial_vector)
+#result_array, dV= Keeper.orbit_calculate(2 * np.pi, ev1, ev2)
 events = {'left':[ev1], 'right':[ev2]}
 dv = Corrector.corrector(Model, initial_vector, 90, events, 0.05, retit=False, maxit=100)
-print(initial_vector, dv)
+
 initial_vector[3] = dv[0]
 initial_vector[4] = dv[1]
 result_array = Integrator.integrate_ode(Model, initial_vector, [0, 2 * np.pi])
 #print(result_array[0], result_array[-1])
 """
 """
-#ev_names = ['X:0', 'alpha:120', 'Y:0', 'alpha:60']
+#Detector = detect_event.detection_tool(Model)
+#arr, evout = Detector.detect(initial_vector, 2*np.pi, ev1, ev2)
+#Detector.plot(arr, evout)
+
 plt.figure(figsize=(10,10))
 plt.plot(result_array[:,0],result_array[:,1],'.-')
 

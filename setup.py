@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="orbipyd",
-    version="3.4.6",
+    version="3.4.9",
     author="Denis Zagorodnev",
     author_email="denis.zagorodnev@gmail.com",
     description="A package which must be my masterpice!",

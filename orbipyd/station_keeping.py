@@ -66,7 +66,7 @@ class station_keeping():
             #print ("time_range = ", time_range)
             arr = self.model.integrator.integrate_ode(self.model, initial_state, time_range, event_list, out=evout)
             traectory.extend(arr[:-1])
-            Evout.extend(evout)
+            #Evout.extend(evout)
             initial_state = arr[-1][:6] 
             
             
@@ -74,7 +74,7 @@ class station_keeping():
         #traectory.extend(arr)   
         
         
-        return(np.array(traectory), np.array(col_dv), np.array(Evout))
+        return(np.array(traectory), np.array(col_dv))
         
     
     

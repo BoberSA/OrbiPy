@@ -29,7 +29,7 @@ class detection_tool():
         events = {'left':ev1, 'right':ev2}
         cor = correction.correction_tool()
         #dv = cor.time2Sphere(self.model, y0, 90, events, 0.05, retit=False, maxit=100)
-        dv = cor.findVLimits(self.model, y0, 90, events, 0.05, retit=False, maxit=100)
+        dv = cor.corrector(self.model, y0, 90, events, 0.05, retit=False, maxit=100)
         y0[3:5] = dv
         evout= []
         arr = self.model.integrator.integrate_ode(self.model, y0, [0, time], events['left']+events['right'], evout)

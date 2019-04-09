@@ -23,7 +23,20 @@ class base_correction_tool():
         
 class correction_tool(base_correction_tool):    
     def prop2Limits(self, model, y0, lims): 
-       
+        """
+        lims is a dictionary with terminal event functions
+        lims['left'] is a list of events that implement left limit
+        lims['right'] is a list of events that implement right limit
+        THis function is a copy from planar cr3bp
+    
+        Returns
+        -------
+    
+        0 : if spacecraft crosses left constrain
+        1 : otherwise
+    
+        and calculated orbit
+        """
         evout = []
         arr = model.integrator.integrate_ode(model, y0, [0, 3140.0], events = lims['left']+lims['right'], out=evout)
         if(len(evout)!=0):
