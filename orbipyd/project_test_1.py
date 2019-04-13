@@ -10,7 +10,6 @@
 """
 Необходимые импорты: из установленного модуля импортируем все его классы.
 """
-from orbipyd import detect_event
 import orbipyd as orb
 import numpy as np
 import matplotlib.pyplot as plt
@@ -59,24 +58,8 @@ dv = Corrector.corrector(Model, initial_vector, 90, events, 0.05, retit=False, m
 initial_vector[3] = dv[0]
 initial_vector[4] = dv[1]
 result_array = Integrator.integrate_ode(Model, initial_vector, [0, 2 * np.pi])
-#print(result_array[0], result_array[-1])
-"""
-"""
-#Detector = detect_event.detection_tool(Model)
-#arr, evout = Detector.detect(initial_vector, 2*np.pi, ev1, ev2)
-#Detector.plot(arr, evout)
 
 plt.figure(figsize=(10,10))
 plt.plot(result_array[:,0],result_array[:,1],'.-')
-
-
-#print(initial_vector, result_array[-1])
-#for ie, _, s, _ in evout:
-#    plt.plot(s[0], s[1], '+k')
-#    plt.text(s[0], s[1], ' [%d] %s' % (ie, ev_names[ie]))    
 plt.axis('equal')
-
 plt.show()
-
-
-

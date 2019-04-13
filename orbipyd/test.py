@@ -79,6 +79,13 @@ class integrator_test(unittest.TestCase):
         result = np.array(result[-1][:6]) - origin
         self.assertTrue(np.linalg.norm(result[:3])<1e-3)
     
+    def test_ode1(self):
+        initial_vector = np.array([Model.L2 + X0km/Model.ER, 0, Z0km/Model.ER, 0, 0, 0])
+        result = Model.ode1(0, initial_vector, Model.mu1)
+        origin = np.array([ 0.,        0.,      0.,  -0.01243568,  0.,         -0.00719063])
+        result = result - origin
+        self.assertTrue(np.linalg.norm(result)<1e-2)
+    
         
 if __name__ == '__main__':
     unittest.main()   
